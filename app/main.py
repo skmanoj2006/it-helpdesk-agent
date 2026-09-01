@@ -1,29 +1,15 @@
-from app.models.ticket import Ticket, TicketPriority
-from app.tools.mock_tools import search_kb, check_network
+from app.tools import create_tool_registry
 
 
 def main():
-    ticket = Ticket(
-        ticket_id="INC001",
-        requester_id="USER123",
-        description="My VPN is not connecting.",
-        priority=TicketPriority.P2
+    tools = create_tool_registry()
+
+    result = tools.execute(
+        "check_network",
+        {"host": "vpn.company.internal"}
     )
 
-    print("Ticket:")
-    print(ticket)
-
-    print("\nSearching knowledge base...")
-
-    kb_result = search_kb(ticket.description)
-
-    print(kb_result)
-
-    print("\nChecking VPN network...")
-
-    network_result = check_network("vpn.company.internal")
-
-    print(network_result)
+    print(result)
 
 
 if __name__ == "__main__":
